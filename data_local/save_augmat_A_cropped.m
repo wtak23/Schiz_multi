@@ -34,4 +34,5 @@ isequal(A'*A,speye(p))
 
 timeStamp=tak_timestamp;
 mFileName=mfilename;
-save([get_rootdir,'/data_local/A_matrix_cropped'],'A','timeStamp','mFileName')
+save([get_rootdir,'/data_local/A_matrix_cropped'],'A',...
+    'nx','ny','nz','timeStamp','mFileName')

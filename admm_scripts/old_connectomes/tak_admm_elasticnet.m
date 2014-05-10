@@ -1,9 +1,7 @@
 function output=tak_admm_elasticnet(X,y,options,K)
 % output=tak_admm_elasticnet(X,y,options,K)
-% (05/10/2014)
-%=========================================================================%
-% - Code from tak_admm_elasticnet.m in the svm_mtl project
-%=========================================================================%
+% (02/22/2014) - changed name from tak_admm_stl_elasticnet.m
+% (12/16/2013) - use 1/n scale loss & primal variable for convergence
 %% sort out 'options'
 %==========================================================================
 % loss function

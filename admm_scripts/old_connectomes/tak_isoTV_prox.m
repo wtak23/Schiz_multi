@@ -3,8 +3,6 @@ function prox=tak_isoTV_prox(w,b,tau,idxCell)
 % (02/13/2014)
 %=========================================================================%
 % tau <- prox scaling term
-%-------------------------------------------------------------------------%
-% (05/10/2014) - added 3d case
 %=========================================================================%
 %%
 d = size(idxCell,1);
@@ -15,12 +13,7 @@ d = size(idxCell,1);
 wmasked=b.*w;
 % vector of euclidean norm of the gradients, with the mask applied
 
-if d==3
-    dx=wmasked(idxCell{1});
-    dy=wmasked(idxCell{2});
-    dz=wmasked(idxCell{3});
-    xnorm_mask = sqrt(dx.^2 + dy.^2 + dz.^2);
-elseif d==4
+if d==4
     dx1=wmasked(idxCell{1});
     dy1=wmasked(idxCell{2});
     dx2=wmasked(idxCell{3});
@@ -49,9 +42,7 @@ shrink_f=max(1-tmp,0); % shrinkage factor
 % the brute force method is slightly faster than repmat
 % (and is faster than looping)
 %-------------------------------------------------------------------------%
-if d==3
-    shrink=[shrink_f;shrink_f;shrink_f];
-elseif d==4
+if d==4
     shrink=[shrink_f;shrink_f;shrink_f;shrink_f];
 elseif d==6
     shrink=[shrink_f;shrink_f;shrink_f;shrink_f;shrink_f;shrink_f];

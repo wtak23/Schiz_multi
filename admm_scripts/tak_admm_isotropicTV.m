@@ -1,7 +1,9 @@
 function output=tak_admm_isotropicTV(X,y,options,K)
 % output=tak_admm_isotropicTV(X,y,options,K)
-% (02/22/2014) - changed name from tak_admm_stl_isotropicTV.m
-% (02/13/2014) - use the new circulant matrix form
+% (05/10/2014)
+%=========================================================================%
+% - Code from tak_admm_elasticnet.m in the svm_mtl project
+%=========================================================================%
 %% sort out 'options'
 %==========================================================================
 % loss function

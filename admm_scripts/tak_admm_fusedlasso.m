@@ -1,8 +1,9 @@
 function output=tak_admm_fusedlasso(X,y,options,K)
 % output=tak_admm_fusedlasso(X,y,options,K)
-% (02/22/2014) - changed name from tak_admm_stl_fusedlasso.m
-% (12/16/2013) - use 1/n scale loss & primal variable for convergence
-% (02/13/2014) - use the new circulant matrix form
+% (05/10/2014)
+%=========================================================================%
+% - Code from tak_admm_elasticnet.m in the svm_mtl project
+%=========================================================================%
 %% sort out 'options'
 %==========================================================================
 % loss function
