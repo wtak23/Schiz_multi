@@ -1,23 +1,21 @@
-%% save_mask_operator_A
-% (05/08/2014)
+%% save_augmat_A_cropped
+% (05/09/2014)
 %=========================================================================%
 % - save sparse matrix A (XYZ x p)
 % - p = # features extracted by mask
 % - XYZ = # voxels in rectangular FOV in the original volume space of brain
 %-------------------------------------------------------------------------%
 % reshape(A*x,[X,Y,Z]); % maps feature vector into original 3d brain space
-% A' * brainVolume(:);  % maps brain volume to feature vector space...
-%                       % equivalent to applying mask
+%                       % (think of it as "data augmentation")
+% A' * brainVolume(:);  % maps brain volume to feature vector space
+%                       % (equivalent to applying mask)
 %=========================================================================%
 %%
 clear
 purge
 
-mask_nii = load_nii([get_rootdir,'/data_local/brain_mask.nii']);
-mask_nii.img=logical(mask_nii.img);
-
-mask_nii=tak_downsample_nii(mask_nii);
-mask = mask_nii.img;
+load([get_rootdir,'/data_local/mask_cropped.mat'],'nii_mask_crop','crop_range')
+mask = nii_mask_crop.img;
 mask_vec=mask(:);
 
 p = sum(mask_vec);
@@ -36,4 +34,4 @@ isequal(A'*A,speye(p))
 
 timeStamp=tak_timestamp;
 mFileName=mfilename;
-save([get_rootdir,'/data_local/A_matrix'],'A','timeStamp','mFileName')
+save([get_rootdir,'/data_local/A_matrix_cropped'],'A','timeStamp','mFileName')

@@ -1,4 +1,4 @@
-%% save_diffmat_C.m.m
+%% save_diffmat_C.m
 % (05/08/2014)
 %=========================================================================%
 % - Construct finite differencing matrix "C", as well as adjacency matrix
@@ -59,4 +59,4 @@ C=tak_adjmat2incmat(adjmat);
 mFileName=mfilename;
 timeStamp=tak_timestamp;
 
-save([get_rootdir,'/data_local/diffmat_C.mat'],'coord','C','adjmat')
+% save([get_rootdir,'/data_local/diffmat_C.mat'],'C','adjmat')

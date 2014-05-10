@@ -11,7 +11,7 @@ function tplot(x,varargin)
 % 6/17/2013 -> added xlim default
 % 6/24/2013 -> began using varargin
 %%
-options={'linewidth',1}; % <-default
+options={'linewidth',2}; % <-default
 switch length(varargin)
     case 0
         plot(x,options{:});
