@@ -10,14 +10,14 @@ fsavefig=true;
 
 %% load data
 % scale to 0 mean, unit variance?
-flag_scale = true;
+flag_scale = false;
 
 if flag_scale
-    dataPath=[get_rootdir,'/classification_results/gridsearch_NB_ttest_zscaled.mat'];
-    outFig=[get_rootdir,'/classification_results/gridsearch_NB_ttest_zscaled'];
+    dataPath=[get_rootdir,'/classification_results/results/gridsearch_NB_ttest_zscaled.mat'];
+    outFig=[get_rootdir,'/classification_results/results/gridsearch_NB_ttest_zscaled'];
 else
-    dataPath=[get_rootdir,'/classification_results/gridsearch_NB_ttest.mat'];
-    outFig=[get_rootdir,'/classification_results/gridsearch_NB_ttest'];
+    dataPath=[get_rootdir,'/classification_results/results/gridsearch_NB_ttest.mat'];
+    outFig=[get_rootdir,'/classification_results/results/gridsearch_NB_ttest'];
 end
 dataVars={'accuracy','TPR', 'TNR','F1','ttestList','mFileName','timeStamp'};
 load(dataPath,dataVars{:})

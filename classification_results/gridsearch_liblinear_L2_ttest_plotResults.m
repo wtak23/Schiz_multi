@@ -6,18 +6,18 @@
 %%
 clear
 purge
-fsavefig=true;
+fsavefig=false;
 
 %% load data
 % scale to 0 mean, unit variance?
-flag_scale = false;
+flag_scale = true;
 
 if flag_scale
-    dataPath=[get_rootdir,'/classification_results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
-    outFig=[get_rootdir,'/classification_results/gridsearch_liblinear_L2_ttest_zscaled'];
+    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
+    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled'];
 else
-    dataPath=[get_rootdir,'/classification_results/gridsearch_liblinear_L2_ttest2.mat'];
-    outFig=[get_rootdir,'/classification_results/gridsearch_liblinear_L2_ttest2'];
+    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2.mat'];
+    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2'];
 end
 dataVars={'accuracy','TPR', 'TNR','F1','ttestList','CList'};
 load(dataPath,dataVars{:})

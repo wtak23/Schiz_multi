@@ -1,4 +1,5 @@
 %% run_admm_scripts.m
+% (05/10/2014)
 %=========================================================================%
 % - run admm scripts on full data (no CV procedure)
 %-------------------------------------------------------------------------%
@@ -31,10 +32,10 @@ end
 %==========================================================================
 % loss function
 %==========================================================================
-options.loss='hinge1';
+% options.loss='hinge1';
 % options.loss='hinge2';
-% options.loss='hubhinge';
-% options.loss_huber_param=0.2; % <- only needed when using huberized-hinge
+options.loss='hubhinge';
+options.loss_huber_param=0.2; % <- only needed when using huberized-hinge
 
 %==========================================================================
 % set penalty parameters

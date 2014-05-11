@@ -52,6 +52,21 @@ else
     outPath=[get_rootdir,'/classification_results/gridsearch_liblinear_L2_ttest2.mat'];
 end
 outVars={'accuracy','TPR', 'TNR','F1','ttestList','CList','mFileName','timeStamp'};
+%% new!!!  indexing design matrix is time consuming, so create cell list
+Xtr_list = cell(10,1);
+Xts_list = cell(10,1);
+for idxCV = 1:10 
+    idxCV
+    %======================================================================
+    % 10-fold-CV data partition
+    %======================================================================
+    mask_ts = Overall.CrossValidFold(:,idxCV);
+    mask_tr = ~mask_ts;
+
+    Xts_list{idxCV} = X(mask_ts,:);
+    Xtr_list{idxCV} = X(mask_tr,:);
+end
+% return
 %% begin grid search
 tic_idx=tic;
 for idx_C = 1:CLength
@@ -72,8 +87,10 @@ for idx_C = 1:CLength
             mask_ts = Overall.CrossValidFold(:,idxCV);
             mask_tr = ~mask_ts;
 
-            Xts = X(mask_ts,:);
-            Xtr = X(mask_tr,:);
+%             Xts = X(mask_ts,:);
+%             Xtr = X(mask_tr,:);
+            Xts = Xts_list{idxCV};
+            Xtr = Xtr_list{idxCV};
 
             yts = y(mask_ts);
             ytr = y(mask_tr);

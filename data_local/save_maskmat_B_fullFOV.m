@@ -1,4 +1,4 @@
-%% save_maskmat_B_cropped.m
+%% save_maskmat_B_fullFOV.m
 % (05/08/2014)
 %=========================================================================%
 % - save masking matrix B (more precisely, masking vector b)

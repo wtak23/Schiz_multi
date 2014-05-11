@@ -59,4 +59,4 @@ C=tak_adjmat2incmat(adjmat);
 mFileName=mfilename;
 timeStamp=tak_timestamp;
 
-% save([get_rootdir,'/data_local/diffmat_C.mat'],'C','adjmat')
+save([get_rootdir,'/data_local/diffmat_C.mat'],'C','adjmat','mFileName','timeStamp')
