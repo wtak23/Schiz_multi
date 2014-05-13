@@ -1,5 +1,5 @@
-%% gridsearch_liblinear_L2_ttest_plotResults
-% (05/10/2014)
+%% gridsearch_liblinear_L2_ttest_plotResults_MM
+% (05/12/2014)
 %=========================================================================%
 % - plot results from gridsearch_liblinear_L2_ttest.m
 %=========================================================================%
@@ -13,11 +13,15 @@ fsavefig=true;
 flag_scale = 0;
 
 if flag_scale
-    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
-    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled'];
+    dataPath=[get_rootdir,'/classification_results/multimodal',...
+        '/results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
+    outFig=[get_rootdir,'/classification_results/multimodal',...
+        '/results/gridsearch_liblinear_L2_ttest_zscaled'];
 else
-    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2.mat'];
-    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2'];
+    dataPath=[get_rootdir,'/classification_results/multimodal',...
+        '/results/gridsearch_liblinear_L2_ttest.mat'];
+    outFig=[get_rootdir,'/classification_results/multimodal',...
+        '/results/gridsearch_liblinear_L2_ttest'];
 end
 dataVars={'accuracy','TPR', 'TNR','F1','ttestList','CList'};
 load(dataPath,dataVars{:})

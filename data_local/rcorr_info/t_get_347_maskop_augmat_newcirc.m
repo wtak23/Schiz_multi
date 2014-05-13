@@ -1,4 +1,11 @@
-%% 06/29/2013
+%% t_get_347_maskop_augmat_newcirc.m 
+%-------------------------------------------------------------------------%
+% (02/12/2014)
+% - same as t_get_347_maskop_augmat_ver2.m, but the scripts now assumes
+%   that the "wrap-around-artifact" of the finite difference matrix takes 
+%   place at the first row (previously, it was assumed to be in the last row).
+% - found this approach to be far more convenient
+%-------------------------------------------------------------------------%
 % - half of the mask in the masking matrix created in t_get_347_maskop_augmat.m 
 %   is redundance since the augmentation matrix fills up half of the vectors by
 %   zeros...so this script replace these redundant masking entries by zeroes.
@@ -11,10 +18,13 @@
 clear all
 purge
 
-fsave=false;
+fsave=true;
+
+outPath = [get_rootdir,'/data_local/rcorr_info/augmat_mask347newcirc.mat'];
+outVars={'b', 'A', 'timeStamp',  'mFileName'};
 %% this cell block is mostly identical to t_get_347_maskop_augmat.m
 load graph_info347.mat adjmat coord
-randn('state',0)
+% randn('state',0)
 d=coord.nsamp;
 p=d*(d-1)/2;
 NSIZE=coord.NSIZE;
@@ -65,14 +75,14 @@ L_brute=C_brute'*C_brute;
 %==================================================================================
 % non-circulant difference matrix defined on the final augmented space
 %==================================================================================
-C_noncirc=tak_diffmat([NSIZE NSIZE],0);
+C_noncirc=tak_diffmat_newcirc([NSIZE NSIZE],0);
 L_noncirc=C_noncirc'*C_noncirc;
 % imedgel(C_noncirc,0),axis on
 
 %==================================================================================
 % circulant difference matrix defined on the final augmented space
 %==================================================================================
-C_circ=tak_diffmat([NSIZE NSIZE],1);
+C_circ=tak_diffmat_newcirc([NSIZE NSIZE],1);
 L_circ=C_circ'*C_circ;
 
 %==================================================================================
@@ -98,7 +108,7 @@ axis1=[idx_range(1),idx_range(end),idx_range(1),idx_range(end)];
 %==================================================================================
 % w=randn(p,1);
 % w=ones(p,1);
-load designMatrix_adhd_censored X
+load rcorr_design_censor X
 w=X(1,:)';
 W=reshape(A*w,[NSIZE,NSIZE]);
 diff_brute=C_brute*w;
@@ -110,12 +120,12 @@ flasso_brute=norm(diff_brute,1)
 %==================================================================================
 support_mask=(W~=0);
 
-Bx1=circshift(support_mask,[-1  0  0  0  0  0])-support_mask;
-By1=circshift(support_mask,[ 0 -1  0  0  0  0])-support_mask;
-Bz1=circshift(support_mask,[ 0  0 -1  0  0  0])-support_mask;
-Bx2=circshift(support_mask,[ 0  0  0 -1  0  0])-support_mask;
-By2=circshift(support_mask,[ 0  0  0  0 -1  0])-support_mask;
-Bz2=circshift(support_mask,[ 0  0  0  0  0 -1])-support_mask;
+Bx1=circshift(support_mask,[+1  0  0  0  0  0])-support_mask;
+By1=circshift(support_mask,[ 0 +1  0  0  0  0])-support_mask;
+Bz1=circshift(support_mask,[ 0  0 +1  0  0  0])-support_mask;
+Bx2=circshift(support_mask,[ 0  0  0 +1  0  0])-support_mask;
+By2=circshift(support_mask,[ 0  0  0  0 +1  0])-support_mask;
+Bz2=circshift(support_mask,[ 0  0  0  0  0 +1])-support_mask;
 
 Bx1=tak_spdiag(Bx1(:)==0);
 By1=tak_spdiag(By1(:)==0);
@@ -138,7 +148,7 @@ Bsupp=...
 % NOTE: unlike the 1d simulation in t_j23_1d_connectome_full_augmentation_CRIT.m,
 %       the above support matrix must be composed with the binary circulant masker
 %==================================================================================
-Bcirc=tak_circmask([NSIZE NSIZE]);
+Bcirc=tak_circmask_newcirc([NSIZE NSIZE]);
 B=Bsupp*Bcirc;
 b=logical(full(diag(B)));
 
@@ -213,6 +223,6 @@ clear b
 b=logical(b2);
 
 if fsave
-    % save augmat_mask347ver2 b A timeStamp mFileName
+    save(outPath,outVars{:})
 end
 %%

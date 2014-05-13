@@ -1,5 +1,5 @@
-%% gridsearch_liblinear_L2_ttest_plotResults
-% (05/10/2014)
+%% gridsearch_liblinear_L2_ttest_plotResults_rcorr
+% (05/12/2014)
 %=========================================================================%
 % - plot results from gridsearch_liblinear_L2_ttest.m
 %=========================================================================%
@@ -10,14 +10,18 @@ fsavefig=true;
 
 %% load data
 % scale to 0 mean, unit variance?
-flag_scale = 0;
+flag_scale = true;
 
 if flag_scale
-    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
-    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest_zscaled'];
+    dataPath=[get_rootdir,'/classification_results/rcorr',...
+        '/results/gridsearch_liblinear_L2_ttest_zscaled.mat'];
+    outFig=[get_rootdir,'/classification_results/rcorr',...
+        '/results/gridsearch_liblinear_L2_ttest_zscaled'];
 else
-    dataPath=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2.mat'];
-    outFig=[get_rootdir,'/classification_results/results/gridsearch_liblinear_L2_ttest2'];
+    dataPath=[get_rootdir,'/classification_results/rcorr',...
+        '/results/gridsearch_liblinear_L2_ttest.mat'];
+    outFig=[get_rootdir,'/classification_results/rcorr',...
+        '/results/gridsearch_liblinear_L2_ttest'];
 end
 dataVars={'accuracy','TPR', 'TNR','F1','ttestList','CList'};
 load(dataPath,dataVars{:})
@@ -40,7 +44,3 @@ subplot(133), imagesc(log2(CList),log2(ttestList),TNR'), colorbar, impixelinfo
     ylabel('log_2(npruned)','fontsize',fsize,'fontweight','b')
     set(gca,'fontsize',fsize,'fontweight','b')
     title('TNR','fontsize',fsize,'fontweight','b')
-
-if fsavefig
-    savefig(outFig,'png')
-end

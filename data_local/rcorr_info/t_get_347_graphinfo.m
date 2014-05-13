@@ -1,30 +1,36 @@
+%% t_get_347_graphinfo.m= 
+% - get (p x p) adjacency matrix [adjmat], which can be used to create
+%   the incidence matrix (aka finite differencing matrix)
+%--------------------------------------------------------------------------
 % Code modified from t_create_6d_NN_adjmat.m...here we negate the sign of the 
 % x-coordinate in the roiMNI...doing this will make the sampling order agree with
 % the order of lexigraphic indexing (see t_j24_study_roiMNI_indexing2.m)
-%----------------------------------------------------------------------------------
+%--------------------------------------------------------------------------
 % 06/24/2013
 %%
 clear
 purge
 
-fsave=false;
-
-d=1166;
+fsave=true;
+outPath = [get_rootdir,'/data_local/rcorr_info/graph_info347.mat'];
+outVars={'adjmat', 'coord', 'roiMNI', 'roiMNI_flipx', 'timeStamp', 'timeTotal', 'mFileName'};
+%%
+d=347;
 p=nchoosek(d,2);
 
 load(['yeo_info',num2str(d),'.mat'], 'yeoLabels', 'roiMNI', 'roiLabel')
 plot_option={'linewidth',3};
 
-% flip the sign of the x-coordinate
+%==========================================================================
+% The original index order of the roiMNI doesn't follow the convention of matlab....
+%  - so flip the sign of the x-coordinate
+%==========================================================================
 roiMNI_flipx= bsxfun(@times, roiMNI, [-1 1 1]);
 
-%==================================================================================
-% The original index order of the roiMNI doesn't follow the convention of matlab....
-% - r1,s1: indexing in the roiMNI coordinate
-% - r2,s2: indexing in the matlab ordering
-% - rlex1,rlex2: lexicographic index order for the 3d coordinates r=(x,y,z)
-% - slex1,slex2: lexicographic index order for the 6d coordinates s=(x1,y1,z1,x2,y2,z2)
-%==================================================================================
+%==========================================================================
+% - r: indexing of the 3d coordinate
+% - rlex: lexicographic index order for the 3d coordinates r=(x,y,z)
+%==========================================================================
 [coord.r,coord.SPACING]=tak_discretize_coord(roiMNI_flipx);
 coord.nsamp=d;
 coord.nx=max(coord.r(:,1));
@@ -33,9 +39,7 @@ coord.nz=max(coord.r(:,3));
 coord.NSIZE=[coord.nx, coord.ny, coord.nz];
 coord.N=prod(coord.NSIZE);
 
-%==================================================================================
 % lexicographic ordering of r=(x,y,z)
-%==================================================================================
 coord.rlex = sub2ind(coord.NSIZE, coord.r(:,1), coord.r(:,2), coord.r(:,3));
 
 % check if the seeds are sampled in lexicographic order
@@ -86,11 +90,10 @@ coord.slex=sub2ind([coord.NSIZE,coord.NSIZE], ...
 isequal(coord.slex,sort(coord.slex))
 %% create a nearest-neighbor graph in 6d...do it brute force
 adjmat=sparse(p,p);
-matlabpool(feature('numCores'))
 timeTotal=tic;
 tic
-parfor i=1:p
-    if mod(i,1000)==0; i,toc, end;
+for i=1:p
+    if mod(i,2000)==0; i,toc, end;
     
     % find the index-set of the 1st order nearest neighbor
     idx_NN=sum(abs(bsxfun(@minus, coord.s, coord.s(i,:))),2)==1;
@@ -109,10 +112,10 @@ parfor i=1:p
 end
 timeTotal=toc(timeTotal);
 timeStamp=tak_timestamp
-matlabpool close
 mFileName=mfilename;
 coord=orderfields(coord);
+
 if fsave
-    save graph_info1166.mat adjmat coord roiMNI roiMNI_flipx timeStamp timeTotal mFileName
+    save(outPath,outVars{:})
 end
 % toc
